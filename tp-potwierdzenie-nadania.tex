@@ -1,0 +1,136 @@
+%& --translate-file=il2-pl
+%% 
+%% Szablon do sk³adania polecenia nadania (list polecony)
+%% Druk jest nieco mniejszy ni¿ orygina³ (usuñ \magnification 975 je¿eli ma byæ identyczny)
+%% Dziêki zmniejszeniu wymiarów na jednej stronie A4 zmie¶ci siê 4x2 = 8 druczków
+%% (c) t.przechlewski, 2012, http://www.gnu.org/licenses/gpl-3.0.txt
+%% 
+\magnification 975
+\input tp-boxes.tex
+\input pdf-trans.tex %% p. jackowski's pdf trans macros
+\def\TPifundefined#1#2#3{\expandafter\ifx\csname #1\endcsname\relax#2\else#3\fi}
+%%
+\TPifundefined{UserFontHt}{\gdef\UserFontHt{11pt}}{}%%%
+%% Wykorzystujemy fonty TeXGyre + AntykwêPó³tawskiego
+\font\UserFont= qx-antpr10 at \UserFontHt
+\font\Title = qx-qhvcr-sc at 12pt
+\font\title = qx-qhvcr-sc at 10pt
+\font\normal = qx-qhvcr at 8pt
+\font\small = qx-qhvcr at 6pt
+\font\plsy = plsy10 at15mm
+\font\descrfont = qx-qhvcri at 6pt
+\normal 
+\baselineskip6mm
+%%
+\def\IMIENAZWISKO#1{\gdef\CImienazwisko{#1}}
+\def\ULICA#1{\gdef\CUlica{#1}}
+\def\KODPOCZTOWY#1{\gdef\CKodpocztowy{#1}}
+\def\MIASTO#1{\gdef\CMiasto{#1}}
+%%
+\def\NADAWCAIMIENAZWISKO#1{\gdef\Cnadawcaimienazwisko{#1}}
+\def\NADAWCAULICA#1{\gdef\Cnadawcaulica{#1}}
+\def\NADAWCAKODPOCZTOWY#1{\gdef\Cnadawcakodpocztowy{#1}}
+\def\NADAWCAMIASTO#1{\gdef\Cnadawcamiasto{#1}}
+%% Odstêp od kropek do linii bazowej tekstu:
+\def\AboveDots{2pt}
+%% 
+%%\def\kolko{\centerline{\plsy\char13}}
+%%\def\kolko{\centerline{\boxscale{330}\hbox{$\bigcirc$}}}
+\def\kolko{\centerline{\pdfximage width 14mm {kolko14mm-1.pdf}\pdfrefximage \pdflastximage}}
+%
+\def\OnDots#1{\raise\AboveDots\hbox to0pt{\UserFont\quad #1\hss}\dotfill}
+\def\BOX {{\MarginSep = 2.0mm \boxit{\hbox to0pt{\hss}}}}
+\def\Line#1{\hbox to \BoxWdLt{#1\dotfill}}
+\def\kodpocztowy#1{\hbox to0pt{\raise-2ex\hbox to20mm{\hss\small kod pocztowy\hss}\hss}%
+  \hbox to0pt{\UserFont \quad #1\hss}\hbox to20mm{\dotfill}~}
+%% %%
+\newdimen\BoxWd \BoxWd=95.0mm
+\newdimen\BoxWdLt \BoxWdLt=70mm
+\newdimen\BoxHd \BoxHd=70mm
+\MarginSep = 0.5mm %%% 2.5mm
+%%
+\newbox\EtykietaBoxL \newbox\EtykietaBoxP
+\def\EtykietaL{\PrzygotujEtykiete{\EtykietaBoxL}}
+\def\EtykietaP{\PrzygotujEtykiete{\EtykietaBoxP}}
+\def\PrintRow{\par %%\vskip0mm\hrule
+  \vskip1.5mm \hbox{\box\EtykietaBoxL\kern4mm\box\EtykietaBoxP}}
+%
+\long\def\PrzygotujEtykiete#1{%%
+\setbox #1 \vbox{ %\Lboxit{
+\vbox to \BoxHd{\hsize = \BoxWd
+%%%
+\baselineskip4mm plus 5mm
+%%%
+\centerline {\Title potwierdzenie nadania}\vskip1mm
+\hbox to\BoxWd{\title przesy³ki poleconej nr \dotfill}
+%%
+%%
+\hbox to 100mm{%
+\MarginSep = 0.5mm
+\vbox{%%
+\hbox to\BoxWdLt{\hss\descrfont wype³nia nadawca \hss}
+\Lboxit{%%
+\vbox to 56mm{\hsize=\BoxWdLt
+%\line{\dotfill wype³nia nadawca \dotfill}
+\kern5.0mm
+\Line{{\title nadawca}:~\dotfill}
+\Line{\OnDots{\Cnadawcaimienazwisko}}
+\Line{\OnDots{\Cnadawcaulica}}
+\Line{\kodpocztowy{\Cnadawcakodpocztowy}\OnDots{\Cnadawcamiasto}}
+\vskip2.5mm
+\Line{{\title adresat}:~\dotfill}
+\Line{\OnDots{\CImienazwisko}}
+\Line{\OnDots{\CUlica}}
+\Line{\kodpocztowy{\CKodpocztowy}\OnDots{\CMiasto}}
+}}}
+%%
+\vbox to 56mm{\hsize = 27mm
+\baselineskip6.6mm plus 6mm
+%%
+\kern1mm
+\line{Op³ata \dotfill z³ \dotfill gr}\par
+\line{Masa: kg \dotfill  g~\dotfill}\par
+\line{Gabaryt A \BOX ~~~B \BOX \hss}\par
+\line{Priorytetowa \BOX \hss}\par
+\line{Potwierdzenie odbioru \BOX \hss}
+%%
+\vskip2.5mm
+%%
+\kolko 
+\vskip-3.5mm
+\centerline{Podpis przyjmuj±cego}
+
+}}}}}
+%%
+%% Dopasowanie marginesów strony A4
+\advance \hoffset-22mm
+\advance \voffset-24mm
+\advance \vsize 60mm
+\nopagenumbers
+\endinput
+%%
+%%
+%% Przyk³ad wykorzystania (wymagana jest kompilacja pdftexem, nie texem ani nie pdf/latexem)
+%% ----------------------
+%%\def\UserFontHt{10pt} %% <-- domy¶lnie 11pt
+%%\input tp-potwierdzenie-nadania.tex
+%%
+%%\NADAWCAIMIENAZWISKO{ks. pra³at Wincenty Jacenty Zadro¿ny}
+%%\NADAWCAULICA{Aleja Zwyciêstwa 128a/217}
+%%\NADAWCAKODPOCZTOWY{81-825}
+%%\NADAWCAMIASTO{Brze¶æ Kujawsko-Pomorski}
+%%
+%%\IMIENAZWISKO{Jan Kowalski}
+%%\ULICA{Abrahama 28a/17}
+%%\KODPOCZTOWY{81-825}
+%%\MIASTO{Sopot}
+%%\EtykietaL
+%%
+%%\IMIENAZWISKO{Kowalska Janina}
+%%\ULICA{Abrahama 28a/17}
+%%\KODPOCZTOWY{81-825}
+%%\MIASTO{Sopot}
+%%\EtykietaP
+%%
+%%\PrintRow 
+%%
