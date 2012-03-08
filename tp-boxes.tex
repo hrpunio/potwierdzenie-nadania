@@ -1,0 +1,14 @@
+\newdimen\HruleThickness \newdimen\VruleThickness
+\HruleThickness= 0.4pt \VruleThickness = 0.4pt
+\def\Hrule{\hrule height\HruleThickness}
+\def\Vrule{\vrule width\VruleThickness}
+\newdimen\MarginSep   \MarginSep = 3pt
+\def\MarginSepSkip{\kern\MarginSep}
+\def\cbox#1{\vbox{\halign{&\hfil##\hfil\cr#1\crcr}}}
+\def\lbox#1{\vbox{\halign{&##\hfil\cr#1\crcr}}}
+\def\rbox#1{\vbox{\halign{&\hfil##\cr#1\crcr}}}
+\def\boxit#1{\hbox{\vbox{\Hrule\hbox{\Vrule\MarginSepSkip%
+\vbox{\MarginSepSkip#1\MarginSepSkip}\MarginSepSkip\Vrule}\Hrule}}}
+\long\def\Lboxit#1{\vbox{\Hrule\hbox{\Vrule\MarginSepSkip%
+\vbox{\MarginSepSkip#1\MarginSepSkip}\MarginSepSkip\Vrule}\Hrule}}
+\endinput
